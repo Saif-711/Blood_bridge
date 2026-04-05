@@ -18,7 +18,6 @@ async function handleResponse(res) {
   return text ? JSON.parse(text) : null;
 }
  
-// Auth
 export const authAPI = {
   register: (data) =>
     fetch(`${BASE_URL}/auth/register`, {
@@ -26,7 +25,7 @@ export const authAPI = {
       headers: getHeaders(),
       body: JSON.stringify(data),
     }).then(handleResponse),
- 
+
   login: (data) =>
     fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
@@ -34,4 +33,43 @@ export const authAPI = {
       body: JSON.stringify(data),
     }).then(handleResponse),
 };
- 
+
+// Donor API
+export const donorAPI = {
+  addDonor: (data) =>
+    fetch(`${BASE_URL}/donors`, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+
+  getAllDonors: () =>
+    fetch(`${BASE_URL}/donors`, {
+      headers: getHeaders(),
+    }).then(handleResponse),
+
+  getAvailableDonors: () =>
+    fetch(`${BASE_URL}/donors/available`, {
+      headers: getHeaders(),
+    }).then(handleResponse),
+};
+
+// Blood Request API
+export const requestAPI = {
+  createRequest: (data) =>
+    fetch(`${BASE_URL}/requests`, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(data),
+    }).then(handleResponse),
+
+  getAllRequests: () =>
+    fetch(`${BASE_URL}/requests`, {
+      headers: getHeaders(),
+    }).then(handleResponse),
+
+  getRequestsByStatus: (status) =>
+    fetch(`${BASE_URL}/requests/status/${status}`, {
+      headers: getHeaders(),
+    }).then(handleResponse),
+};
