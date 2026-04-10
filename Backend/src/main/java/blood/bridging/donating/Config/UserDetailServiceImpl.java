@@ -4,11 +4,13 @@ package blood.bridging.donating.Config;
 import blood.bridging.donating.Auth.User;
 import blood.bridging.donating.Auth.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 @Component
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -19,6 +21,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
         User user = userRepo.findByEmail(username).orElseThrow(
                 () -> new UsernameNotFoundException(username)
         );
-        return (UserDetails) user;
+        String role = user.getRole() == null ? "USER" : user.getRole();
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
+        );
     }
 }

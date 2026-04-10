@@ -1,5 +1,6 @@
 package blood.bridging.donating.Request;
 
+import blood.bridging.donating.Auth.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,4 +23,8 @@ public class BloodRequest {
     private String hospital;        // Hospital name
     private String status;          // PENDING, APPROVED, COMPLETED
     private LocalDateTime requestDate = LocalDateTime.now();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

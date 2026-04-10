@@ -25,6 +25,13 @@ public class DonorController {
         return donorService.getAllDonors();
     }
 
+    @GetMapping("/my-donors")
+    public List<Donor> getMyDonors() {
+        return donorService.getMyDonors();
+    }
+
+
+
     @GetMapping("/available")
     public List<Donor> getAvailableDonors() {
         return donorService.getAvailableDonors();

@@ -6,7 +6,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/requests")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class BloodRequestController {
     private final BloodRequestService requestService;
 
@@ -27,5 +27,9 @@ public class BloodRequestController {
     @GetMapping("/status/{status}")
     public List<BloodRequest> getRequestsByStatus(@PathVariable String status) {
         return requestService.getRequestsByStatus(status);
+    }
+    @GetMapping("/my-requests")
+    public List<BloodRequest> getMyRequests() {
+        return requestService.getMyRequests();
     }
 }

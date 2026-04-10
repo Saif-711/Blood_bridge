@@ -24,13 +24,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<String> login(@RequestBody AuthRequest request) {
         User user = authService.authenticate(request);
         String token = jwtService.generateToken(request.getEmail());
         AuthResponse res=new AuthResponse();
         res.setToken(token);
         return new ResponseEntity<>(
-                 res, HttpStatus.OK
+                 token, HttpStatus.OK
         );
     }
 }

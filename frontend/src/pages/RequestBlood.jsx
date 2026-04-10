@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { requestAPI } from "../services/api";
 
 export default function RequestBlood() {
+  const navigate = useNavigate();
   const [bloodType, setBloodType] = useState("");
   const [hospital, setHospital] = useState("");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || token === "undefined" || token === "null") {
+      navigate("/login", { replace: true });
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +32,9 @@ export default function RequestBlood() {
 
   return (
     <div style={{ padding: "20px" }}>
+      <p style={{ marginBottom: "12px" }}>
+        <Link to="/dashboard">← Dashboard</Link>
+      </p>
       <h2>Request Blood</h2>
       <form onSubmit={handleSubmit}>
         <div>

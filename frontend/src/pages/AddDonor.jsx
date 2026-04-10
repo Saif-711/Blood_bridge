@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { donorAPI } from "../services/api";
 
 export default function AddDonor() {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [bloodType, setBloodType] = useState("");
   const [location, setLocation] = useState("");
   const [available, setAvailable] = useState(true);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || token === "undefined" || token === "null") {
+      navigate("/login", { replace: true });
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,6 +36,9 @@ export default function AddDonor() {
 
   return (
     <div style={{ padding: "20px" }}>
+      <p style={{ marginBottom: "12px" }}>
+        <Link to="/dashboard">← Dashboard</Link>
+      </p>
       <h2>Add Donor</h2>
       <form onSubmit={handleSubmit}>
         <div>

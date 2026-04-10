@@ -1,5 +1,6 @@
 package blood.bridging.donating.Donor;
 
+import blood.bridging.donating.Auth.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,4 +21,7 @@ public class Donor {
     private String bloodType;   // e.g., A+, O-
     private String location;    // City or hospital
     private boolean available;  // Available for donation
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 }
