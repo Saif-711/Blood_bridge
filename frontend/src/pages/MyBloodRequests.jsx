@@ -40,6 +40,8 @@ return (
                     <th style={{border: "1px solid #ddd", padding: "8px"}}>Blood Type</th>
                     <th style={{border: "1px solid #ddd", padding: "8px"}}>Hospital</th>
                     <th style={{border: "1px solid #ddd", padding: "8px"}}>Status</th>
+                    
+
                 </tr>
             </thead>
             <tbody>

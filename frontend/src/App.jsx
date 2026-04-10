@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import RequestBlood from "./pages/RequestBlood";
 import AddDonor from "./pages/AddDonor";
 import MyBloodRequests from "./pages/MyBloodRequests";
+import MyDonors from "./pages/MyDonors";
 function App() {
   return (
     <BrowserRouter>
@@ -17,6 +18,7 @@ function App() {
         <Route path="/request-blood" element={<RequestBlood />} />
         <Route path="/add-donor" element={<AddDonor />} />
         <Route path="/my-requests" element={<MyBloodRequests />} />
+        <Route path="/my-donors" element ={ <MyDonors />} />
       </Routes>
     </BrowserRouter>
   );

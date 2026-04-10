@@ -32,10 +32,11 @@ export default function Dashboard() {
 
   return (
     <div style={{ padding: "24px 20px" }}>
-      <h1 style={{ marginBottom: "8px" }}>Dashboard</h1>
+      <h1 style={{ marginBottom: "8px" }}>Dashboard, Welcome!</h1>
       <p style={{ marginBottom: "24px", color: "var(--text, #6b6375)" }}>
         Choose where to go next.
       </p>
+    
 
       <nav
         style={{
@@ -72,8 +73,12 @@ export default function Dashboard() {
             View your blood requests
           </div>
         </Link>
-
-
+        <Link to="/my-donors" style={{ ...cardStyle, background: "transparent" }}>
+          <strong>My Donors</strong>
+          <div style={{ fontSize: "14px", marginTop: "6px", opacity: 0.85 }}>
+            View your Donors
+          </div>
+        </Link>
       </nav>
 
       <div style={{ marginTop: "28px" }}>

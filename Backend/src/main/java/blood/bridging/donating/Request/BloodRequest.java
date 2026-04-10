@@ -23,8 +23,9 @@ public class BloodRequest {
     private String hospital;        // Hospital name
     private String status;          // PENDING, APPROVED, COMPLETED
     private LocalDateTime requestDate = LocalDateTime.now();
-
+//    private Integer quantity;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
 }

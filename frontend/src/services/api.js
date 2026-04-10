@@ -90,6 +90,11 @@ export const donorAPI = {
     fetch(`${BASE_URL}/donors/available`, {
       headers: getHeaders(),
     }).then(handleResponse),
+
+  getMyDonors: () =>
+    fetch(`${BASE_URL}/donors/my-donors`, {
+      headers: getHeaders(),
+    }).then(handleResponse),
 };
 
 // ================= REQUEST =================
