@@ -1,22 +1,13 @@
 package blood.bridging.donating.Request;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import lombok.Data;
+
+@Data
 public class BloodRequestAddDTO {
     private String bloodType;
-    private String hospital;
-
-    public String getBloodType() {
-        return bloodType;
-    }
-
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
-    }
-
-    public String getHospital() {
-        return hospital;
-    }
-
-    public void setHospital(String hospital) {
-        this.hospital = hospital;
-    }
+    @JsonAlias("hospital")
+    private String hospitalName;
+    private String location;
+    private Integer quantity;
 }

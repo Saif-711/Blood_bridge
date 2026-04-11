@@ -1,12 +1,13 @@
 package blood.bridging.donating.Request;
 
+import blood.bridging.donating.Utils.Enum.RequestStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/requests")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:5173")
 public class BloodRequestController {
     private final BloodRequestService requestService;
 
@@ -24,12 +25,23 @@ public class BloodRequestController {
         return requestService.getAllRequests();
     }
 
-    @GetMapping("/status/{status}")
-    public List<BloodRequest> getRequestsByStatus(@PathVariable String status) {
-        return requestService.getRequestsByStatus(status);
-    }
     @GetMapping("/my-requests")
     public List<BloodRequest> getMyRequests() {
         return requestService.getMyRequests();
+    }
+
+    @GetMapping("/status/{status}")
+    public List<BloodRequest> getRequestsByStatus(@PathVariable RequestStatus status) {
+        return requestService.getRequestsByStatus(status);
+    }
+
+    @GetMapping("/{id}")
+    public BloodRequest getById(@PathVariable Long id) {
+        return requestService.getById(id);
+    }
+
+    @PostMapping("/{id}/match")
+    public BloodRequest triggerMatch(@PathVariable Long id) {
+        return requestService.triggerMatch(id);
     }
 }

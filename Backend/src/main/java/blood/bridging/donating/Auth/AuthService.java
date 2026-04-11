@@ -1,43 +1,74 @@
 package blood.bridging.donating.Auth;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import blood.bridging.donating.Utils.Enum.Role;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
 
     private final UserRepo userRepository;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthService(UserRepo userRepository) {
+    public AuthService(UserRepo userRepository, PasswordEncoder passwordEncoder,
+                       AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     public User register(AuthRequest request) {
+        if (request.getEmail() == null || request.getEmail().isBlank()) {
+            throw new IllegalArgumentException("Email is required");
+        }
+        if (request.getPassword() == null || request.getPassword().isBlank()) {
+            throw new IllegalArgumentException("Password is required");
+        }
+        if (userRepository.existsByEmail(request.getEmail().trim())) {
+            throw new IllegalStateException("Email already registered");
+        }
+
+        Role role = resolveRegistrationRole(request.getRole());
+
         User user = new User();
-        user.setEmail(request.getEmail());
+        user.setEmail(request.getEmail().trim().toLowerCase());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole("USER");
+        user.setName(request.getName());
+        user.setPhone(request.getPhone());
+        user.setRole(role);
         return userRepository.save(user);
     }
 
-    public User login(AuthRequest request) {
-        return userRepository.findByEmail(request.getEmail())
-                .filter(u -> passwordEncoder.matches(request.getPassword(), u.getPassword()))
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+    private static Role resolveRegistrationRole(String roleRaw) {
+        if (roleRaw == null || roleRaw.isBlank()) {
+            return Role.REQUESTER;
+        }
+        Role role;
+        try {
+            role = Role.valueOf(roleRaw.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid role: " + roleRaw);
+        }
+        if (role == Role.ADMIN) {
+            throw new IllegalArgumentException("Cannot register as ADMIN through public API");
+        }
+        return role;
     }
 
     public User authenticate(AuthRequest loginRequest) {
+        String email = loginRequest.getEmail() != null
+                ? loginRequest.getEmail().trim().toLowerCase()
+                : null;
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken
-                        (loginRequest.getEmail(), loginRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                        email,
+                        loginRequest.getPassword()
+                )
         );
-        return userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(
+        return userRepository.findByEmail(email).orElseThrow(
                 () -> new RuntimeException("Invalid email or password")
         );
     }

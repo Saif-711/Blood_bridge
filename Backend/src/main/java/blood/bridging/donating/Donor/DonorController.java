@@ -25,16 +25,22 @@ public class DonorController {
         return donorService.getAllDonors();
     }
 
-    @GetMapping("/my-donors")
-    public List<Donor> getMyDonors() {
-        return donorService.getMyDonors();
+    @GetMapping("/my-profile")
+    public List<Donor> getMyDonorProfile() {
+        return donorService.getMyDonorProfile();
     }
-
-
 
     @GetMapping("/available")
     public List<Donor> getAvailableDonors() {
         return donorService.getAvailableDonors();
+    }
+
+    @GetMapping("/filter")
+    public List<Donor> filter(
+            @RequestParam String bloodType,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) Boolean available) {
+        return donorService.filterDonors(bloodType, location, available);
     }
 
     @GetMapping("/blood-type/{type}")

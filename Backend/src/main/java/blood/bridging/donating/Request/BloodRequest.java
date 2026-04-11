@@ -1,6 +1,8 @@
 package blood.bridging.donating.Request;
 
 import blood.bridging.donating.Auth.User;
+import blood.bridging.donating.Utils.Enum.BloodType;
+import blood.bridging.donating.Utils.Enum.RequestStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,13 +21,22 @@ public class BloodRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String bloodType;       // e.g., A+, O-
-    private String hospital;        // Hospital name
-    private String status;          // PENDING, APPROVED, COMPLETED
+    @Enumerated(EnumType.STRING)
+    private BloodType bloodType;
+
+    @Column(name = "hospital")
+    private String hospitalName;
+
+    private String location;
+
+    private Integer quantity;
+
+    @Enumerated(EnumType.STRING)
+    private RequestStatus status = RequestStatus.PENDING;
+
     private LocalDateTime requestDate = LocalDateTime.now();
-//    private Integer quantity;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
 }

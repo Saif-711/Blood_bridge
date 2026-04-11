@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:5173") // React default
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
     private final AuthService authService;
@@ -19,18 +19,17 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public Object register(@RequestBody AuthRequest request) {
-        return authService.register(request);
+    public ResponseEntity<User> register(@RequestBody AuthRequest request) {
+        return new ResponseEntity<>(authService.register(request), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         User user = authService.authenticate(request);
-        String token = jwtService.generateToken(request.getEmail());
-        AuthResponse res=new AuthResponse();
+        String token = jwtService.generateToken(user.getEmail());
+        AuthResponse res = new AuthResponse();
         res.setToken(token);
-        return new ResponseEntity<>(
-                 token, HttpStatus.OK
-        );
+        res.setEmail(user.getEmail());
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

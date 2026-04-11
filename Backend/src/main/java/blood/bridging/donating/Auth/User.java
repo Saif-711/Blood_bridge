@@ -1,7 +1,12 @@
 package blood.bridging.donating.Auth;
 
+import blood.bridging.donating.Utils.Enum.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.Instant;
 
 @Entity
 @Data
@@ -18,7 +23,16 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @JsonIgnore
     private String password;
 
-    private String role; // "USER" or "ADMIN"
+    private String phone;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.REQUESTER;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Instant createdAt;
 }

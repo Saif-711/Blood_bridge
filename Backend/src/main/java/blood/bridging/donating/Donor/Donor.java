@@ -1,10 +1,13 @@
 package blood.bridging.donating.Donor;
 
 import blood.bridging.donating.Auth.User;
+import blood.bridging.donating.Utils.Enum.BloodType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -16,12 +19,12 @@ public class Donor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;        // Donor name
-    private String bloodType;   // e.g., A+, O-
+    @Enumerated(EnumType.STRING)
+    private BloodType bloodType;
     private String location;    // City or hospital
     private boolean available;  // Available for donation
-    @ManyToOne
-    @JoinColumn(name="user_id")
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
     private User user;
+    private LocalDate lastDonationDate;
 }
